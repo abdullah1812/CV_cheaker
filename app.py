@@ -6,19 +6,27 @@ from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 import logging
 
-# Initialize logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+
+
 
 # Load environment variables
 load_dotenv()
 api_key = os.getenv("GROQ_API_KEY")
 
+
+# Initialize logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Load environment variables
+# load_dotenv()
+# api_key = "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"
+
 # Initialize Flask app
 app = Flask(__name__)
 
 # Define the directory to store uploaded PDF files
-UPLOAD_DIR = "/app/uploaded_pdfs"  # Adjusted for server path; update based on hosting
+UPLOAD_DIR = "/uploaded_pdfs"  # Adjusted for server path; update based on hosting
 
 # Ensure the upload directory exists
 if not os.path.exists(UPLOAD_DIR):
@@ -56,6 +64,7 @@ def analyze_cv(cv_text):
     prompt = f"""
 You are an AI assistant evaluating a CV to determine if the candidate is suitable to be a mentor. A mentor must have:
 - At least 3 years of professional experience in software engineering or a related field.
+- IF he buid some projects add them with experience.
 - Demonstrated leadership or mentoring experience (e.g., leading teams, training others).
 - Strong communication skills (e.g., presentations, workshops).
 - Relevant education or certifications (e.g., Bachelor's in Computer Science, coaching certifications).
@@ -70,7 +79,7 @@ Provide a JSON response with:
 3. If score >= 75, the candidate can be a mentor.
 4. Specific strengths (list of qualifications that match the criteria).
 5. Specific gaps (list of missing or weak criteria).
-6. A recommendation: Is this candidate a mentor? Why or why not?
+6. A recommendation: Is this can be a mentor? Why or why not?
 
 {{"summary": "", "score": 0, "strengths": [], "gaps": [], "recommendation": ""}}
 """
@@ -78,7 +87,7 @@ Provide a JSON response with:
         chat_completion = client.chat.completions.create(
             messages=[{"role": "user", "content": prompt}],
             model="llama3-70b-8192",
-            temperature=0.7,
+            temperature=0.6,
             max_tokens=2000,
             response_format={"type": "json_object"}
         )
@@ -123,4 +132,5 @@ def upload_pdf():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+
+  app.run(host="0.0.0.0", port=5000)
