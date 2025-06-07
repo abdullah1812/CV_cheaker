@@ -8,7 +8,8 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt && \
+    which gunicorn  # Debug: Check if gunicorn is in PATH
 
 # Copy the rest of the application
 COPY . .
@@ -16,5 +17,5 @@ COPY . .
 # Set environment variables
 ENV PORT=5000
 
-# Run gunicorn (ensure it's in PATH)
+# Run gunicorn with a shell to ensure PATH
 CMD ["sh", "-c", "gunicorn --workers=4 --bind=0.0.0.0:$PORT app:app"]
