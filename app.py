@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 # Define the directory to store uploaded PDF files
-UPLOAD_DIR = "/uploaded_pdfs"  # Adjusted for server path; update based on hosting
+UPLOAD_DIR = "uploaded_pdfs"  # Relative to /app in the container
 
 # Ensure the upload directory exists
 if not os.path.exists(UPLOAD_DIR):
@@ -133,4 +133,6 @@ def upload_pdf():
 
 if __name__ == "__main__":
 
-  app.run(host="0.0.0.0", port=5000)
+    import os
+    port = int(os.getenv("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
