@@ -3,3 +3,6 @@ cmds = ["python -m pip install -r requirements.txt"]
 
 [start]
 cmd = "gunicorn app:app"
+
+[phases.setup]
+nixPkgs = ["python311"]  # Example for Python 3.11
