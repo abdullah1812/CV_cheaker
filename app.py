@@ -12,17 +12,14 @@ import logging
 
 
 # Load environment variables
-load_dotenv()
-api_key = os.getenv("GROQ_API_KEY")
+
+api_key = "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"
 
 
 # Initialize logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Load environment variables
-# load_dotenv()
-# api_key = "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"
 
 # Initialize Flask app
 app = Flask(__name__)
