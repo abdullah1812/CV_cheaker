@@ -1,2 +1,5 @@
-build: python -m pip install -r requirements.txt
-start: gunicorn app:app
+[phases.build]
+cmds = ["python -m pip install -r requirements.txt"]
+
+[start]
+cmd = "gunicorn app:app"
