@@ -11,6 +11,16 @@ from dotenv import load_dotenv
 # Initialize Flask app
 app = Flask(__name__)
 
+# Load configuration with better error handling
+try:
+    api_key = os.environ['GROQ_API_KEY']
+    client = Groq(api_key=api_key)
+except KeyError:
+    raise RuntimeError("GROQ_API_KEY environment variable is missing")
+except Exception as e:
+    raise RuntimeError(f"Failed to initialize Groq client: {str(e)}")
+
+
 # Define the directory to store uploaded PDF files
 UPLOAD_DIR = "./uploaded_pdfs"  # Relative to /app in the container
 
@@ -38,15 +48,6 @@ def extract_text_from_pdf(pdf_path):
         # Clean up: Delete the uploaded file after processing
         if os.path.exists(pdf_path):
             os.remove(pdf_path)
-
-# Load environment variables
-# Load API key securely
-api_key = os.getenv("GROQ_API_KEY")
-if not api_key:
-    raise ValueError("GROQ_API_KEY environment variable is missing")
-
-# Initialize Groq client (simplified)
-client = Groq(api_key=api_key)
 
 # Function to analyze CV with LLaMA via Groq
 def analyze_cv(cv_text):
