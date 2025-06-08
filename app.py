@@ -134,5 +134,7 @@ def upload_pdf():
 if __name__ == "__main__":
 
     import os
-    port = int(os.getenv("PORT", 5000))
-    app.run(host="0.0.0.0", port=port)
+    port = os.environ.get("PORT", "5000")
+    if not port.isdigit():
+        raise ValueError("The port value is not a valid number.")
+    app.run(host="0.0.0.0", port=int(port))
