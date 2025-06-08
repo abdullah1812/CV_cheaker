@@ -1,3 +1,5 @@
+#select the right port
+
 import PyPDF2
 import os
 import json
