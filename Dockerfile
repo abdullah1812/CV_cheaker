@@ -16,4 +16,4 @@ COPY . .
 
 
 # Run gunicorn with proper port handling
-CMD ["sh", "-c", "gunicorn --workers=4 --bind=0.0.0.0:${PORT:-5000} app:app"]
+CMD ["sh", "-c", "gunicorn" ,  "--workers=4", "--bind", "0.0.0.0:$PORT", "app:app"]
