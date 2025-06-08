@@ -7,8 +7,6 @@ from groq import Groq
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 
-# Load environment variables
-api_key = os.getenv("GROQ_API_KEY")  # ← Railway injects this
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -41,7 +39,13 @@ def extract_text_from_pdf(pdf_path):
         if os.path.exists(pdf_path):
             os.remove(pdf_path)
 
-# Initialize Groq client
+# Load environment variables
+# Load API key securely
+api_key = os.getenv("GROQ_API_KEY")
+if not api_key:
+    raise ValueError("GROQ_API_KEY environment variable is missing")
+
+# Initialize Groq client (simplified)
 client = Groq(api_key=api_key)
 
 # Function to analyze CV with LLaMA via Groq
