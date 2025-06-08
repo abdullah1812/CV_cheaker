@@ -14,6 +14,8 @@ RUN pip install --no-cache-dir -r requirements.txt && \
 # Copy the rest of the application
 COPY . .
 
+# Set environment variables (default to 5000 if not set by Railway)
+ENV PORT=5000
 
 # Run gunicorn with proper port handling
-CMD ["sh", "-c", "gunicorn" ,  "--workers=4", "--bind", "0.0.0.0:$PORT", "app:app"]
+CMD ["sh", "-c", "gunicorn --workers=4 --bind=0.0.0.0:$PORT app:app"]
