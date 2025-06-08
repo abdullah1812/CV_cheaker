@@ -6,26 +6,16 @@ import json
 from groq import Groq
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
-import logging
-
-
-
 
 # Load environment variables
 
 api_key = "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"
 
-
-# Initialize logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-
 # Initialize Flask app
 app = Flask(__name__)
 
 # Define the directory to store uploaded PDF files
-UPLOAD_DIR = "uploaded_pdfs"  # Relative to /app in the container
+UPLOAD_DIR = "./uploaded_pdfs"  # Relative to /app in the container
 
 # Ensure the upload directory exists
 if not os.path.exists(UPLOAD_DIR):
@@ -92,7 +82,6 @@ Provide a JSON response with:
         )
         return json.loads(chat_completion.choices[0].message.content)
     except Exception as e:
-        logger.error(f"Groq API processing failed: {e}")
         return {"error": f"Groq API processing failed: {e}"}
 
 # Endpoint to receive PDF files via POST
@@ -122,16 +111,13 @@ def upload_pdf():
             return jsonify({"error": "Failed to extract text from PDF"}), 400
         result = analyze_cv(text)
         
-        return jsonify({"message": f"File {file.filename} uploaded successfully", 
-                       "extracted_text": text, 
+        return jsonify({ 
                        "analysis": result}), 200
     
     except Exception as e:
-        logger.error(f"Error processing upload: {e}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-
     import os
     port = int(os.getenv("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
