@@ -1,4 +1,4 @@
-FROM python:3.10-slim
+FROM python:3.11.12-slim
 
 WORKDIR /app
 
@@ -7,6 +7,8 @@ RUN pip install -r requirements.txt
 
 COPY . .
 
+# Let Railway know what port to open (does not set the env var)
 EXPOSE 5000
 
-CMD ["python", "app.py"]
+# Use entrypoint so $PORT is passed dynamically from Railway
+CMD ["sh", "-c", "python app.py"]
