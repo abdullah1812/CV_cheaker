@@ -8,8 +8,7 @@ from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 
 # Load environment variables
-
-api_key = "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"
+api_key = os.getenv("GROQ_API_KEY")  # ← Railway injects this
 
 # Initialize Flask app
 app = Flask(__name__)
