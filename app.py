@@ -10,9 +10,9 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 
 # Load configuration with better error handling and debug
-print("Environment variables:", os.environ)  # Debug: Print environment variables
+# print("Environment variables:", os.environ)  # Debug: Print environment variables
 try:
-    api_key = os.environ['GROQ_API_KEY']
+    api_key = "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"
     client = Groq(api_key=api_key)  # Removed any potential proxies argument
 except KeyError:
     raise RuntimeError("GROQ_API_KEY environment variable is missing")
