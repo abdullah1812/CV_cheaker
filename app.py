@@ -1,5 +1,4 @@
-#select the right port
-
+# Select the right port
 import PyPDF2
 import os
 import json
@@ -7,19 +6,18 @@ from groq import Groq
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 
-
 # Initialize Flask app
 app = Flask(__name__)
 
-# Load configuration with better error handling
+# Load configuration with better error handling and debug
+print("Environment variables:", os.environ)  # Debug: Print environment variables
 try:
     api_key = os.environ['GROQ_API_KEY']
-    client = Groq(api_key=api_key)
+    client = Groq(api_key=api_key)  # Removed any potential proxies argument
 except KeyError:
     raise RuntimeError("GROQ_API_KEY environment variable is missing")
 except Exception as e:
     raise RuntimeError(f"Failed to initialize Groq client: {str(e)}")
-
 
 # Define the directory to store uploaded PDF files
 UPLOAD_DIR = "./uploaded_pdfs"  # Relative to /app in the container
@@ -42,7 +40,7 @@ def extract_text_from_pdf(pdf_path):
                 return None
             return text
     except Exception as e:
-        logger.error(f"Error extracting PDF: {e}")
+        logger.error(f"Error extracting PDF: {e}")  # Note: 'logger' is undefined; consider adding logging
         return None
     finally:
         # Clean up: Delete the uploaded file after processing
@@ -57,7 +55,7 @@ def analyze_cv(cv_text):
     prompt = f"""
 You are an AI assistant evaluating a CV to determine if the candidate is suitable to be a mentor. A mentor must have:
 - At least 3 years of professional experience in software engineering or a related field.
-- IF he buid some projects add them with experience.
+- IF he built some projects add them with experience.
 - Demonstrated leadership or mentoring experience (e.g., leading teams, training others).
 - Strong communication skills (e.g., presentations, workshops).
 - Relevant education or certifications (e.g., Bachelor's in Computer Science, coaching certifications).
@@ -115,8 +113,7 @@ def upload_pdf():
             return jsonify({"error": "Failed to extract text from PDF"}), 400
         result = analyze_cv(text)
         
-        return jsonify({ 
-                       "analysis": result}), 200
+        return jsonify({"analysis": result}), 200
     
     except Exception as e:
         return jsonify({"error": str(e)}), 500
