@@ -1,6 +1,6 @@
 Flask==2.3.2
 PyPDF2==3.0.1
 python-dotenv==1.0.0
-groq==0.4.0  # Pinned to stable version
+groq>=0.4.0  # Pinned to stable version
 gunicorn==20.1.0  # Stable version known to work well
 
