@@ -55,12 +55,10 @@ def analyze_cv(cv_text):
     prompt = f"""
 You are an AI assistant evaluating a CV to determine if the candidate is suitable to be a mentor. A mentor must have:
 - At least 3 years of professional experience in software engineering or a related field.
-- IF he built some projects add them with experience.
 - Demonstrated leadership or mentoring experience (e.g., leading teams, training others).
 - Strong communication skills (e.g., presentations, workshops).
 - Relevant education or certifications (e.g., Bachelor's in Computer Science, coaching certifications).
 - Evidence of soft skills like empathy or problem-solving.
-- Compute the experience from projects also.
 
 CV Text: {cv_text}
 
